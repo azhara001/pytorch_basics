@@ -1,4 +1,5 @@
 import torch 
+import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms 
 from torch.utils.data import DataLoader, Dataset
@@ -50,3 +51,34 @@ test_loc = dataset_fashionMNIST(path_dir='fashion-mnist_test.csv')
 train_loader_loc = DataLoader(train_loc,batch_size=10)
 test_loader_loc = DataLoader(test_loc,batch_size=10)
 
+
+class Network(nn.Module): 
+   
+    def __init__(self):
+      super(Network,self).__init__() # inherits all of the methods and 
+      # functionality of torch.nn.Module class (super class)
+      self.conv1 = nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5)
+      self.conv2 = nn.Conv2d(in_channels = 6, out_channels=12,kernel_size=5)
+
+      self.fc1 = nn.Linear(in_features=12*4*4, out_features=120) # fully connected or dense layers
+      self.fc2 = nn.Linear(in_features=120, out_features=60) # fully connected or dense layers
+      self.out = nn.Linear(in_features=60, out_features= 10) 
+
+    def forward(self,t):
+       t = self.layer(t)
+       return t
+
+    
+
+network = Network()
+
+print(network)
+
+for param in network.parameters():
+    print(param.shape)
+
+for name,param in network.named_parameters():
+    print(name, '\t\t', param.shape)
+          
+
+   
