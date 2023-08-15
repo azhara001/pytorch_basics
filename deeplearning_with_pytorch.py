@@ -8,6 +8,7 @@ print('pytorch modules imported!')
 
 import pandas as pd
 
+#%%
 # importing fashion mnist dataset from torchvision    
 train = torchvision.datasets.FashionMNIST(
     root='FashionMNIST/raw/train-images-idx3-ubyte',
@@ -51,6 +52,7 @@ test_loc = dataset_fashionMNIST(path_dir='fashion-mnist_test.csv')
 train_loader_loc = DataLoader(train_loc,batch_size=10)
 test_loader_loc = DataLoader(test_loc,batch_size=10)
 
+#%%
 
 class Network(nn.Module): 
    
@@ -68,17 +70,38 @@ class Network(nn.Module):
        t = self.layer(t)
        return t
 
-    
 
 network = Network()
 
 print(network)
+
 
 for param in network.parameters():
     print(param.shape)
 
 for name,param in network.named_parameters():
     print(name, '\t\t', param.shape)
-          
 
-   
+#%%          
+
+# Linear Layers in Pytorch in Depth
+# 
+in_features = torch.tensor([1,2,3,4],dtype=torch.float32)
+fc1 = nn.Linear(in_features=4, out_features=3,bias=False) # a layer that maps a 4-d space (input) into a 3-d space (output) -> sets the weights as arbitrary
+fc1 = nn.Linear(in_features=4, out_features=3,bias=True) # a layer that maps a 4-d space (input) into a 3-d space (output) -> sets the weights as arbitrary
+
+weight_matrix = torch.tensor([[1,2,3,4],[3,4,5,6],[4,5,6,7]],dtype=torch.float32)
+
+fc1.weight = nn.Parameter(weight_matrix)  # explicitly fixes the weights of the layer 
+
+print(f"Using linear algebra to compute layer output: {weight_matrix@in_features}")
+print(f"Using the pytorch input argument to compute the output argument: {fc1(in_features)}")
+
+
+# Understanding the __CALL[INPUT]__ special method
+
+fc = nn.Linear(in_features=4,out_features=3)
+t = torch.tensor([1,2,3,4],dtype=torch.float32)
+output = fc(t)
+print(output)
+
